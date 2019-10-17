@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #3131a3; margin-bottom: 50px;">
+  <div class="container">
+  <%= link_to "Blog", root_path, class: "navbar-brand", style: "color: white;"%>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+          <%= link_to "Users", users_path, class: "nav-item nav-link", style: "color: white;"%>
+        <% if current_user %>
+          <%= link_to "Profile", edit_user_registration_path, class: "nav-item nav-link", style: "color: white;"%>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link", style: "color: white;"%>
+        <% else %>
+          <a class="nav-item nav-link" href="<%= new_user_session_path%>" style= "color: white;">Sign In</a>
+          <a class="nav-item nav-link" href="<%= new_user_registration_path%>" style= "color: white;">Sign Up</a>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<% if notice %>
+  <div class="alert alert-success" role="alert"><%= notice %></div>
+<% elsif alert%>
+  <div class="alert alert-danger" role="alert"><%= alert %></div>
+<% end%>
