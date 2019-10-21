@@ -1,25 +1,25 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container ">
-    <h2 class="display-4 text-center"><%= @user.email%></h2>
-    <div class="lead ">
-      <div>
+    <h1 class="display-5 text-center"><%= @user.email%></h1>
+    <div class="lead text-center">
+      <div class="mx-auto text-center"  style="width: 50%; display: block;">      
         <form>
           <div class="form-group row">
-            <label for="staticEmail" class="col-sm-3 col-form-label">Email:</label>
+            <label for="staticEmail" class="col-sm-3 col-form-label" style="font-weight: bold;">Email:</label>
             <div class="col-sm-8">
-              <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%= @user.email%>">
+              <input type="text" readonly class="form-control-plaintext text-center" id="staticEmail" value="<%= @user.email%>">
             </div>
           </div>
           <div class="form-group row">
-            <label for="staticJoinDate" class="col-sm-3 col-form-label">Joined:</label>
+            <label for="staticJoinDate" class="col-sm-3 col-form-label" style="font-weight: bold;">Joined:</label>
             <div class="col-sm-8">
-              <input type="text" readonly class="form-control-plaintext" id="staticJoinedDate" value="<%= distance_of_time_in_words(@user.created_at, Time.now)+ ' ago'%>">
+              <input type="text" readonly class="form-control-plaintext text-center" id="staticJoinedDate" value="<%= distance_of_time_in_words(@user.created_at, Time.now)+ ' ago'%>">
             </div>
           </div>
           <div class="form-group row">
-            <label for="staticUpdateDate" class="col-sm-3 col-form-label">Updated on:</label>
+            <label for="staticUpdateDate" class="col-sm-3 col-form-label" style="font-weight: bold;">Updated:</label>
             <div class="col-sm-8">
-              <input type="text" readonly class="form-control-plaintext" id="staticUpdateDate" value="<%= @user.updated_at.localtime%>">
+              <input type="text" readonly class="form-control-plaintext text-center" id="staticUpdateDate" value="<%= @user.updated_at.localtime%>">
             </div>
           </div>
         </form>
