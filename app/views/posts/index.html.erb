@@ -20,14 +20,24 @@
                 <%# <td><%= post.name</td> %>
                 <td><%= post.title%></td>
                 <% if post.published %>
-                  <td>Published</td>
+                  <td class="text-success">Published</td>
                 <% else %>
-                  <td>Unpublished</td>
+                  <td class="text-danger">Unpublished</td>
                 <% end %>
-                <td><%= link_to "Show", user_post_path(current_user, post), class: 'btn btn-sm btn-info' %> | <%= link_to "Edit", edit_user_post_path(current_user, post), class: 'btn btn-sm btn-secondary' %> | <%= link_to "Delete", user_post_path(current_user, post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+                <td>
+                  <%= link_to "Show", user_post_path(current_user, post), class: 'btn btn-sm btn-info' %> 
+                  | <%= link_to "Edit", edit_user_post_path(current_user, post), class: 'btn btn-sm btn-secondary' %> 
+                  | <%= link_to "Delete", user_post_path(current_user, post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+                  | <% if post.published %>
+                      <%= link_to "Unpublish", unpublish_user_post_path(current_user, post), method: :put, class: 'btn btn-sm btn-danger' %>
+                    <% else %>
+                      <%= link_to "Publish", publish_user_post_path(current_user, post), method: :put, class: 'btn btn-sm btn-success' %>                  
+                    <% end %>
+                </td>
             
-        </tr><% end %>
+        </tr>
           </tbody>
+            <% end %>
 </table>
 <% else %>
     <div class="container" style="padding: 50px;">

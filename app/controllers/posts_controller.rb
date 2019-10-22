@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @posts = current_user.posts.all
+    @posts = current_user.posts.recent
   end
 
   def show
@@ -50,6 +50,18 @@ class PostsController < ApplicationController
       flash[:alert] = 'Unable to delete'
     end
     redirect_to user_post_path(current_user, @post)
+  end
+
+  def publish
+    @post = Post.find(params[:id])
+    @post.update(published: true)
+    redirect_to user_posts_path(current_user)
+  end
+  
+  def unpublish
+    @post = Post.find(params[:id])
+    @post.update(published: false)
+    redirect_to user_posts_path(current_user)
   end
 
   private
