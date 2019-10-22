@@ -19,8 +19,7 @@ class PostsController < ApplicationController
       flash[:notice] = 'Added successfully'
       redirect_to user_post_path(current_user, @post)
     else
-      flash[:alert] = 'Unable to add'
-      render 'create'
+      render 'new'
     end
   end
 

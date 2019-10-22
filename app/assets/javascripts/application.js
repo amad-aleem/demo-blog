@@ -16,3 +16,9 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
+
+$( document ).on('turbolinks:load', function() {
+    CKEDITOR.replace( 'editor',{
+        height: 100
+    } );
+  })

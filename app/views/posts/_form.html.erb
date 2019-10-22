@@ -12,7 +12,7 @@
     </div>
   <% end %>
   <%= form.text_field :title, class:"form-control ", placeholder:"Enter Title"  %>
-  <%= form.text_field :body, class:"form-control ", placeholder:"Enter Description"  %>
+  <%= form.text_area :body, class:"form-control", id: "editor" %>
   <br>
   <%= form.submit 'Submit', class: "btn btn-primary mx-auto", style: "display: block;"%>
 <% end %>
