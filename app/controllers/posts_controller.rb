@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @posts = Post.published.recent
+    @posts = Post.recent
   end
 
   def show
