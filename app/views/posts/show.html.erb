@@ -50,13 +50,24 @@
               <%= link_to "Report", user_post_path(current_user, @post), class: 'badge badge-pill badge-danger' %>
             </div>
             <div class="collapse col-lg-6 offset-lg-3" id="collapse<%=comment.id%>">
-                <%= form_with(model: [ :user, @post ], local: true, html: { class: "form-group" }) do |form| %>
-                  <%= form.text_field :reply, class:"form-control ", placeholder:"Write an amazing reply..."  %>
+                <%= form_with(model: [ @post, @comment ], url: user_post_comments_path(current_user, @post), local: true, html: { class: "form-group" }) do |form| %>
+                  <%= form.text_field :body, class:"form-control ", placeholder:"Write an amazing reply..."  %>
+                  <%= form.hidden_field :comment_id, value: comment.id%>
                   <br>
                   <%= form.submit 'Reply', class: "badge badge-success mx-auto", style: "display: block;"%>
                 <% end %>
-              </div>
+            </div>
           </div>
+          <% if comment.replies.length > 0 %>
+            <div class="row">
+              <h5>Replies:</h5>
+              <ul class="list-group col-lg-9 offset-lg-3">
+              <% comment.replies.each do |reply|%>
+                <li class="list-group-item" style="border-color: blue;"><%= reply.body%></li>
+              <% end %>
+              </ul>
+            </div>
+            <% end %>
         </div>
       </li>
     </ul>
