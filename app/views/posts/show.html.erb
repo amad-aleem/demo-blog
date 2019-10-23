@@ -1,9 +1,65 @@
-    <div class="row">
-      <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-        <h1 class="text-center"><%= @post.title %></h1>
-        <p class="text-center"><%= distance_of_time_in_words(@post.created_at, Time.now)+ ' ago'%></p>
-        <div class="text-center">
-          <%= @post.body.html_safe %>
-        </div>
-      </div>
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+    <h1 class="text-center"><%= @post.title %></h1>
+    <p class="text-center"><%= distance_of_time_in_words(@post.created_at, Time.now)+ ' ago'%></p>
+    <div class="text-center">
+      <%= @post.body.html_safe %>
     </div>
+  </div>
+</div>
+
+<hr/>
+
+<div class=" offset-lg-1">
+  <h5>Comments:</h5>
+</div>
+<div class="row ">
+  <div class="col-md-12 offset-md-1 col-lg-4 offset-lg-4"  >
+    <%= form_with(model: [ @post, @comment ], url: user_post_comments_path(current_user, @post), local: true, html: { class: "form-group" }) do |form| %>
+      <%= form.text_field :body, class:"form-control ", placeholder:"Write awesome comments here."  %>
+      <br>
+      <%= form.submit 'Comment', class: "btn btn-success mx-auto", style: "display: block;"%>
+    <% end %>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2" style="height:300px; overflow-y: scroll;">
+    <% @comments.each do |comment| %>
+      <ul class="list-group">
+        <li class="list-group-item d-flex align-items-center">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3">
+              <span class="badge justify-self-end"><%= comment.created_at.strftime("%e-%b-%y[%I :%M %p]")%></span>
+            </div>
+            <div class="col">
+              <%= comment.body %>
+            </div>
+            <div>
+              <a class="badge badge-pill badge-primary" data-toggle="collapse" href="#collapse<%=comment.id%>" aria-expanded="false" aria-controls="collapse<%=comment.id%>">
+                  Reply ︀
+              </a>
+            </div>
+            <div class="col-md-auto">
+              <%= link_to "Like", user_post_path(current_user, @post), class: 'badge badge-pill badge-primary' %>              
+            </div>
+            <div class="col col-lg-2">
+              <%= link_to "Report", user_post_path(current_user, @post), class: 'badge badge-pill badge-danger' %>
+            </div>
+            <div class="collapse col-lg-6 offset-lg-3" id="collapse<%=comment.id%>">
+                <%= form_with(model: [ :user, @post ], local: true, html: { class: "form-group" }) do |form| %>
+                  <%= form.text_field :reply, class:"form-control ", placeholder:"Write an amazing reply..."  %>
+                  <br>
+                  <%= form.submit 'Reply', class: "badge badge-success mx-auto", style: "display: block;"%>
+                <% end %>
+              </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <% end %>
+  </div>
+</div>

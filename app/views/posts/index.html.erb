@@ -26,8 +26,10 @@
                 <% end %>
                 <td>
                   <%= link_to "Show", user_post_path(current_user, post), class: 'btn btn-sm btn-info' %> 
-                  | <%= link_to "Edit", edit_user_post_path(current_user, post), class: 'btn btn-sm btn-secondary' %> 
+                  <% if current_user == post.user %>
+                    | <%= link_to "Edit", edit_user_post_path(current_user, post), class: 'btn btn-sm btn-secondary' %> 
                   | <%= link_to "Delete", user_post_path(current_user, post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+                  <% end %>
                   | <% if post.published %>
                       <%= link_to "Unpublish", unpublish_user_post_path(current_user, post), method: :put, class: 'btn btn-sm btn-danger' %>
                     <% else %>
