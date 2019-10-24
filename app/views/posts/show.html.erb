@@ -44,7 +44,11 @@
               </a>
             </div>
             <div class="col-md-auto">
-              <%= link_to "Like", user_post_path(current_user, @post), class: 'badge badge-pill badge-primary' %>              
+              <% if likedByUser(comment) %>
+                <%= link_to "Unlike", user_like_path(id: comment.id), method: :delete, remote: true, class: 'badge badge-pill badge-secondary' %>              
+              <% else %>
+                <%= link_to "Like", user_likes_path(current_user, model: 'Comment', id: comment.id), method: :post, remote: true, class: 'badge badge-pill badge-primary' %>              
+              <% end %>
             </div>
             <div class="col col-lg-2">
               <%= link_to "Report", user_post_path(current_user, @post), class: 'badge badge-pill badge-danger' %>
