@@ -7,7 +7,6 @@ class LikesController < ApplicationController
     @like.likeable_type = params[:model]
     @like.likeable_id = params[:id]
     if @like.save
-      flash[:notice] = 'Liked'
       redirect_back(fallback_location: root_path)
     else
       @like.errors.full_messages.each do |msg|
@@ -21,7 +20,6 @@ class LikesController < ApplicationController
   def destroy
     @like = Like.find_by(user_id: params[:user_id], likeable_id: params[:id])
     if @like.destroy
-      flash[:notice] = 'Unliked'
       redirect_back(fallback_location: root_path)
     else
       @like.errors.full_messages.each do |msg|

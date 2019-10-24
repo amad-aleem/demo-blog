@@ -9,6 +9,8 @@ class PostsController < ApplicationController
     @comment = Comment.new
     @post = Post.find(params[:id])
     @comments = @post.comments.includes(:replies, :likes).order(created_at: :desc).where(comment_id: nil)
+    @liked_post = false
+    @liked_post = true if Like.find_by(user_id: current_user.id, likeable_id: @post.id, likeable_type: 'Post')
   end
 
   def new
