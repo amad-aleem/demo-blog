@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'home' => 'pages/home', as: :home
   resources :users do
     resources :likes
+    resources :reports
     resources :posts do
       put 'publish' => 'posts#publish', on: :member
       put 'unpublish' => 'posts#unpublish', on: :member
