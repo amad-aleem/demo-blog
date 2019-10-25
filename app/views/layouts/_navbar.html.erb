@@ -6,14 +6,14 @@
   </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-          <%= link_to "Users", users_path, class: "nav-item nav-link", style: "color: white;"%>
-        <% if current_user %>
-          <%= link_to "Posts", user_posts_path(current_user), class: "nav-item nav-link", style: "color: white;"%>
-          <%= link_to "Profile", edit_user_registration_path, class: "nav-item nav-link", style: "color: white;"%>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link", style: "color: white;"%>
+      <% if current_user %>
+          <%= link_to "Users", users_path, class: "navbar-brand", style: "color: white;"%>
+          <%= link_to "Posts", user_posts_path(current_user), class: "navbar-brand", style: "color: white;"%>
+          <%= link_to "Profile", edit_user_registration_path, class: "navbar-brand", style: "color: white;"%>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "navbar-brand", style: "color: white;"%>
         <% else %>
-          <a class="nav-item nav-link" href="<%= new_user_session_path%>" style= "color: white;">Sign In</a>
-          <a class="nav-item nav-link" href="<%= new_user_registration_path%>" style= "color: white;">Sign Up</a>
+          <a class="navbar-brand" href="<%= new_user_session_path%>" style= "color: white;">Sign In</a>
+          <a class="navbar-brand" href="<%= new_user_registration_path%>" style= "color: white;">Sign Up</a>
         <% end %>
         </div>
       </div>
