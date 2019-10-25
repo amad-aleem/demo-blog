@@ -2,15 +2,16 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @posts = Post.recent
+    @posts = Post.includes(:reports).recent
   end
 
   def show
     @comment = Comment.new
     @post = Post.find(params[:id])
     @comments = @post.comments.includes(:replies, :likes).order(created_at: :desc).where(comment_id: nil)
-    @liked_post = false
     @liked_post = true if Like.find_by(user_id: current_user.id, likeable_id: @post.id, likeable_type: 'Post')
+    @reported_post = true if Report.find_by(user_id: current_user.id, reportable_id: @post.id, reportable_type: 'Post')
+    @report = current_user.reports.new
   end
 
   def new

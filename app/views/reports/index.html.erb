@@ -1,0 +1,38 @@
+<h2 class="text-center">List of Reports</h2>
+<% if @reports.length > 0 %>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Report Id</th>
+      <%# <th scope="col">Name</th> %>
+      <th scope="col">Post</th>
+      <th scope="col">Reported for</th>
+      <th scope="col">Reported by</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+        <tr>
+            <% @reports.each do |report| %>
+                <th scope="row"><%= report.id%></th>
+                <td><%= link_to(user_post_path(current_user, @post.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') %></td>
+                <td><%= report.body %></td>
+                <td><%= report.user.email%></td>
+
+                <td>
+                  <%= link_to(user_post_path(current_user, @post.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') do %>
+                      <i class="far fa-trash-alt"></i>
+                  <% end %> | 
+                      <%= link_to "Unpublish", unpublish_user_post_path(current_user, @post.id), method: :put, class: 'btn btn-sm btn-danger' %>
+                </td>
+            
+        </tr>
+          </tbody>
+            <% end %>
+</table>
+<% else %>
+    <div class="container" style="padding: 50px;">
+        <h4 class="text-center text-secondary ">No reports to show ...</h4>
+    </div>
+<% end %>
+

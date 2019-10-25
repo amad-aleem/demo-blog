@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: %i[create]
+  before_action :set_post, only: [:create]
 
   def create
     @comment = @post.comments.create(comment_params)
