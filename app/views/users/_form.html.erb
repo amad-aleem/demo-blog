@@ -1,17 +1,20 @@
-<%= form_with(model: @user, local: true, html: { class: "form-group" }) do |form| %>
-  <% if @user.errors.any? %>
-    <div class="lead">
-      <h5><%= pluralize(@user.errors.count, "error") %> prohibited this post from being saved:</h5>
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <div class="alert alert-danger lead" role="alert">
-            <li><%= message %></li>
-          </div>
-        <% end %>
-      </ul>
-    </div>
+  <%= form_with(model: @user, local: true, html: { class: "container form-group" }) do |form| %>
+    <% if @user.errors.any? %>
+      <div class="lead">
+        <h5><%= pluralize(@user.errors.count, "error") %> prohibited this post from being saved:</h5>
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <div class="alert alert-danger lead" role="alert">
+              <li><%= message %></li>
+            </div>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= form.label :email,"Email"  %>
+    <%= form.text_field :email, class:"form-control ", placeholder:"Enter email"  %>
+    <%= form.label :role,"Role"  %>
+    <%= form.select :role, [ 'Member','Moderator','Admin'], {} , required: true, class: 'custom-select'%>
+    <br>
+    <%= form.submit 'Submit', class: "btn btn-primary mx-auto", style: "display: block;"%>
   <% end %>
-  <%= form.text_field :email, class:"form-control ", placeholder:"Enter email"  %>
-  <br>
-  <%= form.submit 'Submit', class: "btn btn-primary mx-auto", style: "display: block;"%>
-<% end %>

@@ -11,10 +11,12 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-auto offset-lg-7">
-    <%= link_to(user_reports_path(id: @post.id), class: 'btn btn-danger rounded-pill') do %>              
-        <span><i class="far fa-list-alt"></i> View Reports</span>
+<div class="row justify-content-end">
+  <div class="col-md-auto ">
+    <% if policy(@post).admin_or_moderator? %>
+      <%= link_to(user_reports_path(id: @post.id), class: 'btn btn-danger rounded-pill') do %>              
+          <span><i class="far fa-list-alt"></i> View Reports</span>
+      <% end %>
     <% end %>
     <% if @liked_post %>
       <%= link_to(user_like_path(id: @post.id), method: :delete, remote: true, class: 'btn btn-secondary rounded-pill') do %>              
@@ -121,11 +123,6 @@
                     <%= link_to(user_likes_path(current_user, model: 'Comment', id: comment.id), method: :post, remote: true, class: 'badge badge-pill badge-primary') do %>              
                       <span><i class="fas fa-thumbs-up"></i> Like</span>
                     <% end %>
-                  <% end %>
-                </div>
-                <div class="col-lg-auto">
-                  <%= link_to(user_reports_path(current_user, model: 'Comment', id: comment.id), method: :post, class: 'badge badge-pill badge-danger') do %>
-                      <span><i class="fas fa-exclamation-triangle"></i> Report</span>
                   <% end %>
                 </div>
               </div>

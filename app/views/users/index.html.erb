@@ -5,6 +5,7 @@
       <th scope="col">Id</th>
       <%# <th scope="col">Name</th> %>
       <th scope="col">Email</th>
+      <th scope="col">Type</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -13,7 +14,8 @@
     <% @users.each do |user| %>
       <th scope="row"><%= user.id%></th>
       <%# <td><%= user.name</td> %>
-      <td><%= user.email%></td>
+      <td><%= user.email %></td>
+      <td><%= user.role%></td>
       <td>
         <%= link_to(user_path(user), class: 'btn btn-sm btn-info') do %>
           <i class="fas fa-eye"></i>

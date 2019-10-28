@@ -8,4 +8,5 @@ class User < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :reports, as: :reportable, dependent: :destroy
 
+  enum role: { Member: 'Member', Moderator: 'Moderator', Admin: 'Admin' }
 end

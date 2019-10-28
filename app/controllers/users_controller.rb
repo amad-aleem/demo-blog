@@ -3,8 +3,11 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, except: %i[index]
+  after_action :verify_authorized
+  
   def index
     @users = User.all
+    authorize User
   end
 
   def show; end
@@ -12,6 +15,7 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
+    authorize @user
     if @user.update(user_params)
       flash[:notice] = 'Edited successfully'
       redirect_to @user
@@ -25,6 +29,7 @@ class UsersController < ApplicationController
     flag = check_self
     return redirect_to users_path if flag
 
+    authorize @user
     if @user.destroy
       flash[:notice] = 'Deleted successfully'
       redirect_to users_path
@@ -39,10 +44,11 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+    authorize @user
   end
 
   def user_params
-    params.require(:user).permit(:email)
+    params.require(:user).permit(:email, :role)
   end
 
   def check_self
