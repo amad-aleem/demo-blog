@@ -4,7 +4,6 @@
   <thead>
     <tr>
       <th scope="col">Report Id</th>
-      <%# <th scope="col">Name</th> %>
       <th scope="col">Post</th>
       <th scope="col">Reported for</th>
       <th scope="col">Reported by</th>
@@ -15,17 +14,15 @@
         <tr>
             <% @reports.each do |report| %>
                 <th scope="row"><%= report.id%></th>
-                <td><%= link_to(user_post_path(current_user, @post.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') %></td>
+                <td><%= link_to @post.title, user_post_path(@post.user, @post.id) %></td>
                 <td><%= report.body %></td>
                 <td><%= report.user.email%></td>
-
                 <td>
-                  <%= link_to(user_post_path(current_user, @post.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') do %>
+                  <%= link_to(user_post_path(@post.user, @post.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') do %>
                       <i class="far fa-trash-alt"></i>
                   <% end %> | 
-                      <%= link_to "Unpublish", unpublish_user_post_path(current_user, @post.id), method: :put, class: 'btn btn-sm btn-danger' %>
+                      <%= link_to "Unpublish", unpublish_user_post_path(@post.user, @post.id), method: :put, class: 'btn btn-sm btn-danger' %>
                 </td>
-            
         </tr>
           </tbody>
             <% end %>
