@@ -40,7 +40,7 @@ class PostsController < ApplicationController
   end
 
   def update
-		if @post.update(post_params)-
+		if @post.update(post_params)
       flash[:notice] = 'Edited successfully'
 			redirect_to user_post_path(current_user, @post)
 		else
