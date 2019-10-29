@@ -1,2 +1,32 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+
+<div class="container bg-dark" style="border-radius: 5px; padding-bottom: 30px;">
+    <div class="row" style="color: white; font-size: 80px; font-style: italic;font-family: Georgia; margin-left: 20px;">
+        <%= @first_post.title %>
+    </div>
+    <div class="row" style="color: silver; font-size: 30px; font-style: italic;font-family: Georgia; margin-left: 20px;">
+        <%= truncate(@first_post.body, escape: false, length: 50).capitalize.html_safe %>
+    </div>
+    <%= link_to 'Continue reading...', user_post_path(@first_post.user, @first_post.id), style:"color: white; font-size: 20px; font-family: Georgia; margin-left: 20px;" %>
+</div>
+
+<br>
+
+<h3 class="text-center" style="font-size: 30px; font-style: italic;font-family: Georgia;">Recently published</h3>
+<br>
+<div class="container">
+    <div class="row">
+        <% @posts.each do |post| %>
+            <div class="card" style="width: 100%; margin-bottom: 20px;">
+                <div class="card-body">
+                    <h5 class="card-title"><%= post.title %></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By: <%= post.user.email %> 
+                        <p class='text-secondary'>Added: <%= distance_of_time_in_words(post.created_at, Time.now)+ ' ago' %></p>
+                    </h6>
+                    <p class="card-text ml-3"><%= truncate(post.body, escape: false, length: 200) %></p>
+                    <%= link_to 'Continue reading...', user_post_path(post.user, post.id), class:"card-link", style:"font-size: 15px; font-family: Georgia;" %>
+                </div>
+            </div>
+            <br/>
+        <% end %>
+    </div>
+</div>

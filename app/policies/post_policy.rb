@@ -4,7 +4,7 @@ class PostPolicy < ApplicationPolicy
     end
 
     def show?
-        return true if @user || admin_or_moderator
+        return true if @user || admin_or_moderator?
     end
 
     def new?
@@ -16,28 +16,28 @@ class PostPolicy < ApplicationPolicy
     end
 
     def edit?
-        return true if @user && (is_author || admin_or_moderator)
+        return true if @user && (is_author? || admin_or_moderator?)
     end
 
     def update?
-        return true if @user && (is_author || admin_or_moderator)
+        return true if @user && (is_author? || admin_or_moderator?)
     end
  
     def destroy?
-        return true if @user && (is_author || admin_or_moderator)
+        return true if @user && (is_author? || admin_or_moderator?)
     end
 
     def publish?
-        return true if @user && (admin_or_moderator)
+        return true if @user && (admin_or_moderator?)
     end
 
     def unpublish?
-        return true if @user && (admin_or_moderator)
+        return true if @user && (admin_or_moderator?)
     end
 
     def admin_or_moderator?
         return true if @user && (@user.Admin? || @user.Moderator?)
-      end
+    end
   
     def is_author?
         return true if @user && (@user == post.user)
