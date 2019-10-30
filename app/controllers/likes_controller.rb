@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LikesController < ApplicationController
   before_action :authenticate_user!
 
@@ -15,7 +17,6 @@ class LikesController < ApplicationController
       redirect_back(fallback_location: root_path)
     end
   end
-
 
   def destroy
     @like = Like.find_by(user_id: params[:user_id], likeable_id: params[:id])

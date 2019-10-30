@@ -4,7 +4,7 @@
             <%= @first_post.title %>
         </div>
         <div class="row" style="color: silver; font-size: 30px; font-style: italic;font-family: Georgia; margin-left: 20px;">
-            <%= truncate(@first_post.body, escape: false, length: 50).capitalize.html_safe %>
+            <%= sanitize truncate(@first_post.body, escape: false, length: 50).capitalize.html_safe %>
         </div>
         <%= link_to 'Continue reading...', user_post_path(@first_post.user, @first_post.id), style:"color: white; font-size: 20px; font-family: Georgia; margin-left: 20px;" %>
     </div>

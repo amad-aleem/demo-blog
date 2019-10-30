@@ -1,22 +1,28 @@
+# frozen_string_literal: true
+
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, except: [:index, :new, :create]
+  before_action :set_post, except: %i[index new create]
   after_action :verify_authorized
 
   def index
     authorize Post
-    if policy(Post).admin_or_moderator?
-      @posts = Post.includes(:reports).recent
-    else
-      @posts = Post.published.includes(:reports).recent
-    end
+    @posts = if policy(Post).admin_or_moderator?
+               Post.includes(:reports).recent
+             else
+               Post.published.includes(:reports).recent
+             end
   end
 
   def show
     @comment = Comment.new
     @comments = @post.comments.includes(:replies, :likes).order(created_at: :desc).where(comment_id: nil)
-    @liked_post = true if Like.find_by(user_id: current_user.id, likeable_id: @post.id, likeable_type: 'Post')
-    @reported_post = true if Report.find_by(user_id: current_user.id, reportable_id: @post.id, reportable_type: 'Post')
+    if Like.find_by(user_id: current_user.id, likeable_id: @post.id, likeable_type: 'Post')
+      @liked_post = true
+    end
+    if Report.find_by(user_id: current_user.id, reportable_id: @post.id, reportable_type: 'Post')
+      @reported_post = true
+    end
     @report = current_user.reports.new
   end
 
@@ -36,17 +42,16 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-		if @post.update(post_params)
+    if @post.update(post_params)
       flash[:notice] = 'Edited successfully'
-			redirect_to user_post_path(current_user, @post)
-		else
+      redirect_to user_post_path(current_user, @post)
+    else
       flash[:alert] = 'Unable to edit'
-			render 'edit'
-		end
+      render 'edit'
+    end
   end
 
   def destroy
@@ -64,7 +69,7 @@ class PostsController < ApplicationController
     @post.update(published: true)
     redirect_to user_posts_path(current_user)
   end
-  
+
   def unpublish
     @post.update(published: false)
     redirect_to user_posts_path(current_user)

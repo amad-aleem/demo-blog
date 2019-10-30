@@ -5,7 +5,7 @@
         <h1 class="text-center"><%= @post.title %></h1>
         <p class="text-center"><%= distance_of_time_in_words(@post.created_at, Time.now)+ ' ago'%></p>
         <div class="text-center">
-          <%= @post.body.html_safe %>
+          <%= sanitize @post.body.html_safe %>
       </li>
     </ul>
   </div>
