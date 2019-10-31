@@ -2,7 +2,11 @@
 
 class PostPolicy < ApplicationPolicy
   def index?
-    return true if @user
+    if self.admin_or_moderator?
+      return Post.includes(:reports, :user).recent
+    else
+      return Post.published.includes(:reports, :user).recent
+    end
   end
 
   def show?

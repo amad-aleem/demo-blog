@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md-12 offset-md-1 col-lg-9 offset-lg-2" style="height:400px; margin-bottom:50px; overflow: auto;">
+  <div class="col-md-12 offset-md-1 col-lg-9 offset-lg-2 post-container">
     <ul class="list-group">
       <li class="list-group-item align-items-center">
         <h1 class="text-center"><%= @post.title %></h1>
-        <p class="text-center"><%= distance_of_time_in_words(@post.created_at, Time.now)+ ' ago'%></p>
+        <p class="text-center"><%= distance_of_time_in_words(@post.created_at, Time.now)+ ' ago' %></p>
         <div class="text-center">
-          <%= sanitize @post.body.html_safe %>
+          <%= sanitize @post.body %>
       </li>
     </ul>
   </div>
@@ -13,7 +13,7 @@
 
 <div class="row justify-content-end">
   <div class="col-md-auto ">
-    <% if policy(@post).admin_or_moderator? %>
+    <% if current_user.Admin? || current_user.Moderator? %>
       <%= link_to(user_reports_path(id: @post.id), class: 'btn btn-danger rounded-pill') do %>              
           <span><i class="far fa-list-alt"></i> View Reports</span>
       <% end %>
@@ -27,134 +27,13 @@
         <span><i class="fas fa-thumbs-up"></i> Like</span>
       <% end %>
     <% end %>
-    <!-- Modal trigger button -->
-      <% if @reported_post %>
-        <button type="button" class="btn btn-danger rounded-pill">
-          <span><i class="disabled fas fa-exclamation-triangle"></i> Reported</span>
-        </button>
-      <% else %>
-        <button type="button" class="btn btn-danger rounded-pill" data-toggle="modal" data-target="#reportModalCenter">
-          <span><i class="fas fa-exclamation-triangle"></i> Report</span>
-        </button>
-      <% end %>
-      <!-- Modal -->
-      <div class="modal fade" id="reportModalCenter" tabindex="-1" role="dialog" aria-labelledby="reportModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="reportModalLongTitle">Reporting <strong><%= @post.title%></strong></h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <%= form_with(model: [ :user, @report ], local: true, html: { class: "form-group" }) do |form| %>
-                <% if @report.errors.any? %>
-                  <div class="lead">
-                    <h5><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h5>
-                    <ul>
-                      <% @report.errors.full_messages.each do |message| %>
-                        <div class="alert alert-danger lead" role="alert">
-                          <li><%= message %></li>
-                        </div>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
-                <%= form.label 'This post is :' %>
-                <%= form.select :body, [ 'Spam','Inappropriate','Copied', 'Racial content' ], {} , required: true, class: 'custom-select', style: 'width: 50%; margin-bottom:10px;' %>
-                <%= hidden_field_tag "model", 'Post' %>
-                <%= hidden_field_tag "id", @post.id %>
-                <%= form.submit 'Report', class: "btn btn-danger rounded-pill mx-auto", style: "display: block;" %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+    <%= render 'report_modal', locals: { reported_post: @reported_post, report: @report }%>
   </div>
 </div>
 
 <hr/>
 
-<div class=" offset-lg-1">
-  <h5><span><i class="far fa-comment-dots fa-lg"></i> Comments</span></h5>
-</div>
-<div class="row ">
-  <div class="col-md-12 offset-md-1 col-lg-4 offset-lg-4"  >
-    <%= form_with(model: [ @post, @comment ], url: user_post_comments_path(current_user, @post), local: true, html: { class: "form-group" }) do |form| %>
-      <%= form.text_field :body, class:"form-control ", placeholder:"Write awesome comments here."  %>
-      <br>
-      <%= form.submit 'Comment', class: "btn btn-success mx-auto", style: "display: block;"%>
-    <% end %>
-  </div>
-</div>
+<%= render 'comment_form', locals: { post: @post, comment: @comment}%>
 
 <hr/>
-
-<div class="row">
-  <% if @comments.length > 0 %>
-    <div class="col-lg-10 offset-md-1" style="height:300px; overflow-y: scroll; overflow: auto;">
-      <% @comments.each do |comment| %>
-        <ul class="list-group">
-          <li class="list-group-item align-items-center">
-          <div class="container">
-            <div class="row d-flex justify-content-between">
-              <div class="col-lg-auto">
-                <span class="badge">
-                  <%= comment.created_at.strftime("%e/%b/%y[%I :%M %p]")%>
-                  By:  <%= link_to "#{comment.user.email}",user_path(comment.user)%>
-                </span>
-              </div>
-              <div class="col-lg-4">
-                <%= comment.body %>
-              </div>
-              <div class='row'>
-                  <div class="col-lg-auto">
-                  <a class="badge badge-pill badge-primary" data-toggle="collapse" href="#collapse<%=comment.id%>" aria-expanded="false" aria-controls="collapse<%=comment.id%>">
-                      <span><i class="fas fa-reply"></i> Reply</span>
-                  </a>
-                </div>
-                <div class="col-lg-auto">
-                  <% if likedByUser(comment) %>
-                    <%= link_to(user_like_path(id: comment.id), method: :delete, remote: true, class: 'badge badge-pill badge-secondary') do %>
-                      <span><i class="fas fa-thumbs-down"></i> Unlike</span>
-                    <% end %>
-                  <% else %>
-                    <%= link_to(user_likes_path(current_user, model: 'Comment', id: comment.id), method: :post, remote: true, class: 'badge badge-pill badge-primary') do %>              
-                      <span><i class="fas fa-thumbs-up"></i> Like</span>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-              <div class="collapse col-lg-6 offset-lg-3" id="collapse<%=comment.id%>">
-                  <%= form_with(model: [ @post, @comment ], url: user_post_comments_path(current_user, @post), local: true, html: { class: "form-group" }) do |form| %>
-                    <%= form.text_field :body, class:"form-control ", placeholder:"Write an amazing reply..."  %>
-                    <%= form.hidden_field :comment_id, value: comment.id%>
-                    <br>
-                    <%= form.submit 'Reply', class: "badge badge-success mx-auto", style: "display: block;"%>
-                  <% end %>
-              </div>
-            </div>
-            <% if comment.replies.length > 0 %>
-              <div class='container'>
-                <div class="row">
-                  <h5>Replies:</h5>
-                  <ul class="list-group col-lg-9 offset-lg-3">
-                  <% comment.replies.each do |reply|%>
-                    <li class="list-group-item" style="border-color: blue;"><%= link_to "#{comment.user.email}: ",user_path(reply.user), class: 'badge'%> <%= reply.body%></li>
-                  <% end %>
-                  </ul>
-                </div>
-              </div>
-              <% end %>
-          </div>
-        </li>
-      </ul> 
-      <% end %>
-    </div>
-  <% else %>
-    <div class="container" style="padding: 50px;">
-        <h4 class="text-center text-secondary ">No comments yet...</h4>
-    </div>
-  <% end %>
-</div>
+<%= render 'comments', locals: { comments: @comments } %>

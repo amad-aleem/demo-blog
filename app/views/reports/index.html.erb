@@ -1,5 +1,5 @@
 <h2 class="text-center">List of Reports</h2>
-<% if @reports.length > 0 %>
+<% if @reports.any? %>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -13,7 +13,7 @@
   <tbody>
         <tr>
             <% @reports.each do |report| %>
-                <th scope="row"><%= report.id%></th>
+                <td><%= report.id%></td>
                 <td><%= link_to @post.title, user_post_path(@post.user, @post.id) %></td>
                 <td><%= report.body %></td>
                 <td><%= report.user.email%></td>
@@ -28,7 +28,7 @@
             <% end %>
 </table>
 <% else %>
-    <div class="container" style="padding: 50px;">
+    <div class="container p-30">
         <h4 class="text-center text-secondary ">No reports to show ...</h4>
     </div>
 <% end %>

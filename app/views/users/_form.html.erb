@@ -12,9 +12,9 @@
       </div>
     <% end %>
     <%= form.label :email,"Email"  %>
-    <%= form.text_field :email, class:"form-control ", placeholder:"Enter email"  %>
-    <%= form.label :role,"Role"  %>
-    <%= form.select :role, [ 'Member','Moderator','Admin'], {} , required: true, class: 'custom-select'%>
+    <%= form.text_field :email, class:"form-control ", placeholder:"Enter email" %>
+    <%= form.label :role,"Role" %>
+    <%= form.select :role, [ 'Member','Moderator','Admin'], {} , required: true, class: 'custom-select' %>
     <br>
-    <%= form.submit 'Submit', class: "btn btn-primary mx-auto", style: "display: block;"%>
+    <%= form.submit 'Submit', class: "btn btn-primary mx-auto d-block" %>
   <% end %>

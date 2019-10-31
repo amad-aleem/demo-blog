@@ -12,19 +12,20 @@
   <tbody>
     <tr>
     <% @users.each do |user| %>
-      <th scope="row"><%= user.id%></th>
-      <%# <td><%= user.name</td> %>
+      <td><%= user.id%></td>
       <td><%= user.email %></td>
       <td><%= user.role%></td>
       <td>
         <%= link_to(user_path(user), class: 'btn btn-sm btn-info') do %>
           <i class="fas fa-eye"></i>
         <% end %> | 
-        <%= link_to(edit_user_path(user), class: 'btn btn-sm btn-secondary') do %>
-          <i class="fas fa-pencil-alt"></i>
-        <% end %> | 
-        <%= link_to(user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') do %>
-          <i class="fas fa-trash-alt"></i>
+        <% if current_user.Admin? %>
+          <%= link_to(edit_user_path(user), class: 'btn btn-sm btn-secondary') do %>
+            <i class="fas fa-pencil-alt"></i>
+          <% end %> | 
+          <%= link_to(user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger') do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %> 
         <% end %> 
       </td>
     </tr>

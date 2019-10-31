@@ -1,20 +1,20 @@
 <nav class="navbar navbar-expand-lg sticky-top navbar-light" style="background-color: #3131a3; margin-bottom: 30px;">
   <div class="container">
-  <%= link_to "Blog", root_path, class: "navbar-brand", style: "color: white;"%>
+  <%= link_to "Blog", root_path, class: "navbar-brand brand-color" %>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
       <% if current_user %>
-          <%= link_to "Users", users_path, class: "navbar-brand", style: "color: white;" if policy(current_user).index?%>
-          <%= link_to "Posts", user_posts_path(current_user), class: "navbar-brand", style: "color: white;"%>
-          <%= link_to "Profile", edit_user_registration_path, class: "navbar-brand", style: "color: white;"%>
-          <%= link_to "Admin Panel", rails_admin.dashboard_path, class: "navbar-brand", style: "color: red;" if policy(current_user).index?%>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "navbar-brand", style: "color: white;"%>
+          <%= link_to "Users", users_path, class: "navbar-brand brand-color" if current_user.Admin? %>
+          <%= link_to "Posts", user_posts_path(current_user), class: "navbar-brand brand-color" %>
+          <%= link_to "Profile", edit_user_registration_path, class: "navbar-brand brand-color" %>
+          <%= link_to "Admin Panel", rails_admin.dashboard_path, class: "navbar-brand", style: "color: red;" if current_user.Admin? %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "navbar-brand brand-color" %>
         <% else %>
-          <a class="navbar-brand" href="<%= new_user_session_path%>" style= "color: white;">Sign In</a>
-          <a class="navbar-brand" href="<%= new_user_registration_path%>" style= "color: white;">Sign Up</a>
+          <a class="navbar-brand brand-color" href="<%= new_user_session_path %>">Sign In</a>
+          <a class="navbar-brand brand-color" href="<%= new_user_registration_path %>">Sign Up</a>
         <% end %>
         </div>
       </div>
@@ -23,6 +23,6 @@
 </nav>
 <% if notice %>
   <div class="alert alert-success container" role="alert"><%= notice %></div>
-<% elsif alert%>
+<% elsif alert %>
   <div class="alert alert-danger container" role="alert"><%= alert %></div>
-<% end%>
+<% end %>

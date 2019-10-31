@@ -1,3 +1,32 @@
 // Place all the styles related to the pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.main-post-container {
+    border-radius: 5px;
+    padding-bottom: 30px;   
+    font-style: italic;
+    font-family: Georgia; 
+}
+.main-post-row-1{
+    color: white; 
+    font-size: 80px;
+    margin-left: 20px;
+}
+.main-post-row-2{
+    color: silver; 
+    font-size: 30px;
+    margin-left: 20px;
+}
+h3{
+    font-size: 30px; 
+    font-style: italic;
+    font-family: Georgia;
+}
+.card{
+    width: 100%; 
+    margin-bottom: 20px;
+}
+.card-link{
+    font-size: 15px; 
+    font-family: Georgia;
+}

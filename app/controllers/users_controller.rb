@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
-    authorize @user
     if @user.update(user_params)
       flash[:notice] = 'Edited successfully'
       redirect_to @user
@@ -26,10 +25,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    flag = check_self
-    return redirect_to users_path if flag
-
-    authorize @user
+    return redirect_to users_path, alert: 'You cannot delete yourself!' if current_user == @user
     if @user.destroy
       flash[:notice] = 'Deleted successfully'
       redirect_to users_path
@@ -49,12 +45,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :role)
-  end
-
-  def check_self
-    if current_user == @user
-      flash[:alert] = 'You cannot delete yourself!'
-      true
-    end
   end
 end

@@ -2,7 +2,7 @@
 
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:create]
+  before_action :set_post
 
   def create
     @comment = @post.comments.create(comment_params)
@@ -10,9 +10,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_back(fallback_location: root_path)
     else
-      @comment.errors.full_messages.each do |msg|
-        flash[:alert] = msg
-      end
+      @comment.errors.full_messages.join('\n')
       redirect_back(fallback_location: @post)
     end
   end

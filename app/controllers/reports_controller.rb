@@ -5,7 +5,6 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.new
-    @report.user_id = current_user.id
     @report.reportable_type = params[:model]
     @report.reportable_id = params[:id]
     @report.body = params[:report][:body]
@@ -13,15 +12,13 @@ class ReportsController < ApplicationController
       flash[:notice] = 'Reported successfully'
       redirect_back(fallback_location: root_path)
     else
-      @report.errors.full_messages.each do |msg|
-        flash[:alert] = msg
-      end
+      @report.errors.full_messages.join('\n')
       redirect_back(fallback_location: root_path)
     end
   end
 
   def index
-    @post = Post.find(params[:id])
-    @reports = Report.where(reportable_id: @post.id, reportable_type: 'Post')
+    @post = Post.includes(:user).find(params[:id])
+    @reports = @post.reports
   end
 end

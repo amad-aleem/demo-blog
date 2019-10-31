@@ -10,4 +10,6 @@ class Comment < ApplicationRecord
   has_many :reports, as: :reportable, dependent: :destroy
 
   validates :body, presence: true
+
+  scope :with_no_replies, -> { where(comment_id: nil) }
 end

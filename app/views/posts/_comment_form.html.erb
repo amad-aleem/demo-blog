@@ -1,0 +1,12 @@
+<div class=" offset-lg-1">
+  <h5><span><i class="far fa-comment-dots fa-lg"></i> Comments</span></h5>
+</div>
+<div class="row ">
+  <div class="col-md-12 offset-md-1 col-lg-4 offset-lg-4"  >
+    <%= form_with(model: [ @post, @comment ], url: user_post_comments_path(current_user, @post), local: true, html: { class: "form-group" }) do |form| %>
+      <%= form.text_field :body, class:"form-control ", placeholder:"Write awesome comments here." %>
+      <br>
+      <%= form.submit 'Comment', class: "btn btn-success mx-auto d-block" %>
+    <% end %>
+  </div>
+</div>

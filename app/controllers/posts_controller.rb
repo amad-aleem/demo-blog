@@ -7,20 +7,16 @@ class PostsController < ApplicationController
 
   def index
     authorize Post
-    @posts = if policy(Post).admin_or_moderator?
-               Post.includes(:reports).recent
-             else
-               Post.published.includes(:reports).recent
-             end
+    @posts = policy(Post).index?
   end
 
   def show
     @comment = Comment.new
-    @comments = @post.comments.includes(:replies, :likes).order(created_at: :desc).where(comment_id: nil)
-    if Like.find_by(user_id: current_user.id, likeable_id: @post.id, likeable_type: 'Post')
+    @comments = @post.comments.includes(:replies, :likes, :user).order(created_at: :desc).with_no_replies
+    if @post.likes.any?
       @liked_post = true
     end
-    if Report.find_by(user_id: current_user.id, reportable_id: @post.id, reportable_type: 'Post')
+    if @post.reports.any?
       @reported_post = true
     end
     @report = current_user.reports.new
@@ -32,7 +28,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.create(post_params)
+    @post = current_user.posts.new(post_params)
     authorize @post
     if @post.save
       flash[:notice] = 'Added successfully'
@@ -46,10 +42,10 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      flash[:notice] = 'Edited successfully'
+      flash[:notice] = 'Updated successfully'
       redirect_to user_post_path(current_user, @post)
     else
-      flash[:alert] = 'Unable to edit'
+      flash[:alert] = @post.errors.full_messages.join('\n')
       render 'edit'
     end
   end
@@ -57,10 +53,9 @@ class PostsController < ApplicationController
   def destroy
     if @post.destroy
       flash[:notice] = 'Deleted successfully'
-      redirect_to user_posts_path(current_user)
-      return
+      return redirect_to user_posts_path(current_user)
     else
-      flash[:alert] = 'Unable to delete'
+      flash[:alert] = @post.errors.full_messages.join('\n')
     end
     redirect_to user_post_path(current_user, @post)
   end
